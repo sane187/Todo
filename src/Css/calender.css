@@ -1,0 +1,10 @@
+.date-cont{
+  background-color: #F5F5F5;
+  border-radius: 10px;
+  color: #000;
+  border: 1.5px solid #e6e6e600;
+  -webkit-box-shadow: 0 0 10px #e4e4e4;
+        box-shadow: 0 0 10px #e4e4e4;
+        border:2px solid #B05ADB
+}
+ 

@@ -1,0 +1,74 @@
+.sidebar-cont svg {
+    margin-right: 8px;  
+}
+.sidebar-cont{
+    padding: 0.5rem;
+    font-size: 1.4rem;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    width: 40%;
+    margin-bottom: 1rem;
+    font-family:'Lato',sans-serif;
+    border-radius: 10px;
+    border: 2px solid #fff;
+    box-shadow: 0 0 10px #000;
+}
+
+.task-head,#contained-modal-title-vcenter{
+    font-family: 'Palanquin Dark', sans-serif;
+    font-weight: 400;
+}
+
+.form-check-input{
+    border-radius: 4px !important;
+    box-shadow: none !important;
+}
+
+.form-check-input:checked{
+    background-color:#B05ADB !important;
+    border: none !important;
+   
+}
+.handshake-icon{
+    font-size: 2rem;
+    color: #B05ADB;
+margin-left: 8px;
+
+}
+
+.task-outer-cont div {
+    font-size: 1.3rem !important;
+    font-family:'Lato',sans-serif;
+}
+
+.mfooter-btn-cont{
+display: flex;
+font-family:'Lato',sans-serif;
+
+}
+.mfooter-btn-cont button:first-child{
+background-color: #000;
+color: #fff;
+border-radius: 25px;
+border: none;
+padding: 8px 18px;
+}
+.mfooter-btn-cont button:nth-child(2){
+background-color: rgba(128, 128, 128, 0.543);
+color: #000;
+font-weight: 700;
+border-radius: 25px;
+border: none;
+padding: 8px 18px;
+}
+.open-modal-btn{
+    background-color: rgba(128, 128, 128, 0.279) !important;
+color: #000 !important;
+font-weight: 600 !important;
+border: 1px solid #e4e4e4 !important;
+box-shadow: none !important;
+} 
+.imp-cont{
+    font-size: 1.2rem;
+    color: #000;
+}
