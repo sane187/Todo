@@ -1,4 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { current } from '@reduxjs/toolkit'
+
 let dateObj = new Date();
 
 const date=dateObj
@@ -26,16 +28,25 @@ const taskSlice=createSlice({
     initialState,
     reducers:{
         addTask: (state,action) => {
-            const aj=action.payload;
-            
+            const aj=action.payload;  
             state.data.push(aj);
-           
-
           },
+          deleteTask:(state,action)=>{
+            console.log(current(state).data)
+            console.log(action.payload)
+                    const id=action.payload
+                    const aj=state.data.filter(item => item.id !== id);
+           state.data=aj
+          },
+          updateTask:(state,action)=>{
+            
+            let aj=state.data.findIndex(item=>item.id===action.payload.id)
+                     state.data[aj]=action.payload
+          }
     }
 }
 )
 
 export default taskSlice.reducer
 
-export const {addTask} = taskSlice.actions
+export const {addTask,deleteTask,updateTask} = taskSlice.actions

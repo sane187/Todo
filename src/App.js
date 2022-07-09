@@ -1,15 +1,16 @@
 import React from 'react';
+import  { Routes, Route, Link }from "react-router-dom";
 import './App.css';
-import Calender from './Components/Calender';
-import Header from './Components/Header';
-import Task from './Components/Task';
+import Landing from './Components/Landing';
+import Signup from './Components/Signup';
 
 function App() {
   return (
     <React.Fragment>
-      <Header />
-      <Calender />
-      <Task />
+      <Routes>
+      <Route path="/" element={<Signup />} />   
+      <Route path="/home" element={<Landing />} />   
+      </Routes>
     </React.Fragment>
   );
 }
