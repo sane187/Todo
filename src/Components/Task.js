@@ -10,18 +10,21 @@ import {addTask,deleteTask,updateTask} from "../store/features/task/taskSlice";
 import { FaRegHandSpock,FaRegStar } from 'react-icons/fa';
 import todo from '../Assets/todo.jpg';
 import { nanoid } from '@reduxjs/toolkit';
+import { getNotesData,createNotesData } from '../store/features/task/taskSlice';
 
 
 function MyVerticallyCenteredModal(props) {
  
+const date = new Date()
+console.log(date)
 
   const [imp,setImp]=useState(+false);
-  const [formData,setFormData] = useState({title:"",task:"","fav":+false})
+  const [formData,setFormData] = useState({title:"",task:"","fav":+false,date:date})
   const dispatch=useDispatch();
 
   const handleSave =(props)=>{
     props.onHide(); 
-    dispatch(addTask({...formData,id:nanoid()}));
+    dispatch(createNotesData({...formData,id:nanoid()}));
     setImp(+false)
     setFormData({title:"",task:""})
   }
@@ -129,15 +132,19 @@ const Task = () => {
     localStorage.setItem('user', JSON.stringify(data));
   }
   const name= useSelector(store=>store.user)
+  console.log(name)
 
-  if(name.list.data){
+  if(name.list.data ){
   populateStorage(name.list.data.Data) 
   }
+
 const dispatch=useDispatch()
 const [selected,setSelected]=useState({})
   const {data}=useSelector(state=>state.task);
   const [modalShow, setModalShow] = React.useState(+false);
   const [show, setShow] = React.useState(+false);
+  let mata=localStorage.getItem('user', JSON.stringify(data));
+
 
   const handleDelete=(id)=>{
     dispatch(deleteTask(id));
@@ -146,7 +153,11 @@ const [selected,setSelected]=useState({})
     setSelected(item)
    setShow(+true)
   }
- 
+ useEffect(
+  ()=>{
+    dispatch(getNotesData())
+  },[]
+ )
  
   return (
     <React.Fragment>

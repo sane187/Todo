@@ -20,7 +20,7 @@ const Signup = () => {
         
         dispatch(getPosts(details))
       
-       setTimeout(navigate("/home"),3000);
+       setTimeout(navigate("/home"),4000);
     }
     const handleClick =(feildname,e)=>{
        let same={...details}

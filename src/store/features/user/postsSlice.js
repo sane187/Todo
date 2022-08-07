@@ -10,7 +10,7 @@ export const getPosts = createAsyncThunk(
       'https://assignment-venturepact.herokuapp.com/login',
       details,
       {
-        headers: {  'Content-Type': 'application/json',mode:'cors'},
+        headers: {  'Content-Type': 'application/json', mode:'cors'},
       }
     )
     if(res){
