@@ -4,10 +4,10 @@ import { FiLock } from 'react-icons/fi';
 import { HiOutlineMail } from 'react-icons/hi';
 import { Button } from 'react-bootstrap';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { getPosts } from '../store/features/user/postsSlice';
+import { login,signup } from '../store/features/user/userSlice';
 
 
-const Signup = () => {
+const Login = () => {
   const [details,setDetails] = useState({
     "email":"",
     "password":""
@@ -18,9 +18,9 @@ const Signup = () => {
     const handleSubmit=(e)=>{
         e.preventDefault(); 
         
-        dispatch(getPosts(details))
+         dispatch(signup(details))
       
-       setTimeout(navigate("/home"),4000);
+      //  setTimeout(navigate("/home"),4000);
     }
     const handleClick =(feildname,e)=>{
        let same={...details}
@@ -40,7 +40,7 @@ const Signup = () => {
             <div className="row justify-content-center">
               <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
 
-                <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Sign up</p>
+                <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login To Continue</p>
 
                 <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
 
@@ -83,4 +83,4 @@ const Signup = () => {
   )
 }
 
-export default Signup
+export default Login

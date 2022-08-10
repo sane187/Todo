@@ -3,7 +3,7 @@ import { useSelector,useDispatch } from 'react-redux';
 import {changeName} from '../store/features/profile/profileSlice';
 import { Row,Col,Container } from 'react-bootstrap';
 import '../Css/calender.css';
-import { getPosts } from '../store/features/user/postsSlice';
+import { getPosts } from '../store/features/user/userSlice';
 
 // const {name,username,total}=useSelector((store)=>store.profile)
 // const dispatch= useDispatch()

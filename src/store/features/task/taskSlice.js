@@ -15,6 +15,7 @@ export const getNotesData = createAsyncThunk("task/getNotesData",async(_,thunkAP
       },
     })
     const data = await response.json()
+    console.log(data)
   
     if(data){
       return data.Data
@@ -28,7 +29,7 @@ export const getNotesData = createAsyncThunk("task/getNotesData",async(_,thunkAP
 export const createNotesData = createAsyncThunk("task/createNotesData",async(obj,thunkAPI)=>{
   
   try{
-   
+   console.log(obj);
     let response= await fetch(`${environment.baseURL}/create`, {
       method: "POST",
       headers: {
@@ -41,6 +42,49 @@ export const createNotesData = createAsyncThunk("task/createNotesData",async(obj
   
     if(data){
       return data.Data
+    }
+  }
+  catch(error){
+     return thunkAPI.rejectWithValue({error:error.message})
+  }
+})
+export const deleteNotesData = createAsyncThunk("task/deleteNotesData",async(id,thunkAPI)=>{
+  
+  try{
+   
+    let response= await fetch(`${environment.baseURL}/delete/${id}`, {
+      method: "DELETE",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    })
+    const data = await response.json()
+  console.log(data)
+    if(data){
+      return data.Data
+    }
+  }
+  catch(error){
+     return thunkAPI.rejectWithValue({error:error.message})
+  }
+})
+export const updateNotesData = createAsyncThunk("task/updateNotesData",async({id,Data},thunkAPI)=>{
+  
+  try{
+   console.log(id,Data)
+    let response= await fetch(`${environment.baseURL}/update/${id}`, {
+      method: "PUT",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(Data)
+    })
+    const data = await response.json()
+  console.log(data)
+    if(data){
+      return data
     }
   }
   catch(error){
@@ -61,17 +105,7 @@ const taskSlice=createSlice({
     name:"task",
     initialState,
     reducers:{
-        addTask: (state,action) => {
-            const aj=action.payload;  
-            state.data.push(aj);
-          },
-          deleteTask:(state,action)=>{
-            // console.log(current(state).data)
-            console.log(action.payload)
-                    const id=action.payload
-                    const aj=state.data.filter(item => item.id !== id);
-           state.data=aj
-          },
+      
           updateTask:(state,action)=>{
             
             let aj=state.data.findIndex(item=>item.id===action.payload.id)
@@ -98,6 +132,24 @@ const taskSlice=createSlice({
       [createNotesData.rejected]: (state) => {
         state.loading = false
       },
+      [deleteNotesData.pending]: (state) => {
+        state.loading = true
+      },
+      [deleteNotesData.fulfilled]: (state, { payload }) => {
+        console.log(payload)
+      },
+      [deleteNotesData.rejected]: (state) => {
+        state.loading = false
+      },
+      [updateNotesData.pending]: (state) => {
+        state.loading = true
+      },
+      [updateNotesData.fulfilled]: (state, { payload }) => {
+        console.log(payload)
+      },
+      [updateNotesData.rejected]: (state) => {
+        state.loading = false
+      }
     }
   },
 )

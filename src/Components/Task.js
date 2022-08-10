@@ -6,17 +6,16 @@ import { BsPhoneFill,BsHash,BsCalendar2Date,BsCardChecklist,BsFillStarFill,BsFil
 import {AiOutlineUser } from 'react-icons/ai';
 import { HiOutlineMail,HiOutlineOfficeBuilding } from 'react-icons/hi';
 import {MdDelete } from 'react-icons/md';
-import {addTask,deleteTask,updateTask} from "../store/features/task/taskSlice";
 import { FaRegHandSpock,FaRegStar } from 'react-icons/fa';
 import todo from '../Assets/todo.jpg';
 import { nanoid } from '@reduxjs/toolkit';
-import { getNotesData,createNotesData } from '../store/features/task/taskSlice';
+import { getNotesData,createNotesData,deleteNotesData,updateNotesData } from '../store/features/task/taskSlice';
 
 
 function MyVerticallyCenteredModal(props) {
  
 const date = new Date()
-console.log(date)
+
 
   const [imp,setImp]=useState(+false);
   const [formData,setFormData] = useState({title:"",task:"","fav":+false,date:date})
@@ -80,8 +79,9 @@ function EditModal(props) {
 
   const handleSave =(props,id)=>{
     props.onHide(); 
-    console.log(formData)
-    dispatch(updateTask(formData));
+   
+    dispatch(updateNotesData({id:formData._id,Data:formData}));
+     setTimeout(window.location.reload(),2000)
   }
  return (
    
@@ -131,23 +131,24 @@ const Task = () => {
   function populateStorage(data) {
     localStorage.setItem('user', JSON.stringify(data));
   }
-  const name= useSelector(store=>store.user)
-  console.log(name)
+  // const name= useSelector(store=>store.user)
 
-  if(name.list.data ){
-  populateStorage(name.list.data.Data) 
-  }
+
+  // if(name.list.data ){
+  // populateStorage(name.list.data.Data) 
+  // }
 
 const dispatch=useDispatch()
 const [selected,setSelected]=useState({})
   const {data}=useSelector(state=>state.task);
   const [modalShow, setModalShow] = React.useState(+false);
   const [show, setShow] = React.useState(+false);
-  let mata=localStorage.getItem('user', JSON.stringify(data));
-
 
   const handleDelete=(id)=>{
-    dispatch(deleteTask(id));
+    dispatch(deleteNotesData(id));
+    setTimeout(function(){
+      window.location.reload();
+   }, 3000);
   }
   const handleEdit =(item)=>{
     setSelected(item)
@@ -169,30 +170,30 @@ const [selected,setSelected]=useState({})
       {show?<EditModal show={show} onHide={()=>setShow(+false)} data={selected}/>:""}
 <Row >
     <Col lg={4} xl={4}  style={{backgroundImage: `url(${todo})`,backgroundSize:"cover",backgroundRepeat:'no-repeat',backgroundPosition:"center center"}}>
-      {name.list.data?
         <div className='p-4'>
-<Stack className='sidebar-cont' direction='horizontal'><AiOutlineUser />{name.list.data.Data.firstName}{name.list.data.Data.lastName}</Stack>
-<Stack className='sidebar-cont' direction='horizontal'><HiOutlineMail />{name.list.data.Data.email}</Stack>
-<Stack className='sidebar-cont' direction='horizontal'><BsPhoneFill />{name.list.data.Data.mobileNumber}</Stack>
-<Stack className='sidebar-cont' direction='horizontal'><HiOutlineOfficeBuilding />{name.list.data.Data.Organization.name}</Stack>
-<Stack className='sidebar-cont' direction='horizontal'><BsHash />{name.list.data.Data.Organization.id}</Stack>
+<Stack className='sidebar-cont' direction='horizontal'><AiOutlineUser />Aj</Stack>
+<Stack className='sidebar-cont' direction='horizontal'><HiOutlineMail />Aj</Stack>
+<Stack className='sidebar-cont' direction='horizontal'><BsPhoneFill />Aj</Stack>
+<Stack className='sidebar-cont' direction='horizontal'><HiOutlineOfficeBuilding />Aj</Stack>
+<Stack className='sidebar-cont' direction='horizontal'><BsHash />Aj</Stack>
 
-        </div>:""
-}
+        </div>
+
     </Col>
     <Col lg={8} xl={8} >
 <section className='px-5'>
- <Stack gap={5} direction='horizontal'><div className='d-flex align-items-center'><h1 className='task-head me-1'>What's up, {name.list.data?name.list.data.Data.firstName:""}! </h1><FaRegHandSpock className='handshake-icon'/>
+ <Stack gap={5} direction='horizontal'><div className='d-flex align-items-center'><h1 className='task-head me-1'>What's up, Arpit!</h1><FaRegHandSpock className='handshake-icon'/>
  </div><Button className="open-modal-btn" variant="primary" onClick={() => setModalShow(+true)}>+ Add New Task</Button></Stack>
  <h5 className='mt-2'>5 Tasks For Today</h5>
  <div className='task-outer-cont'>
  {data?data.map((item,index)=>(
+ 
   <div className='d-flex align-items-center justify-content-between py-2' style={{borderBottom:"1px solid #e4e4e4"}} key={item.id}> 
   <Form.Check type="checkbox" id={item.id} label={item.title} />
   <div className='d-flex align-items-center'>
     <Button className="p-1" variant='warning' onClick={()=>handleEdit(item)}>Edit</Button>
    
-  <MdDelete className='mx-2' onClick={()=>handleDelete(item.id)}/>
+  <MdDelete className='mx-2' onClick={()=>handleDelete(item._id)}/>
   <BsFillStarFill style={{color:item.fav===+true?"#FFD700":"rgba(0,0,0,0.2)"}} onClick={(event)=>event.target.style.color="#FFD700"}/>
   </div>
   </div> 

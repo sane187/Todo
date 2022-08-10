@@ -1,7 +1,7 @@
 import {configureStore,getDefaultMiddleware} from '@reduxjs/toolkit'
 import profileReducer from './features/profile/profileSlice'
 import taskReducer from './features/task/taskSlice';
-import userReducer from './features/user/postsSlice'
+import userReducer from './features/user/userSlice'
 
 
 export const store= configureStore({
