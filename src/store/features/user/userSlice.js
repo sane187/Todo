@@ -5,19 +5,28 @@ import {environment} from '../../../Environments/environments'
 
 
 export const login= createAsyncThunk(
-  'posts/login',async (details) => {
-    console.log(details)
-   const res= axios.post(
-      'https://assignment-venturepact.herokuapp.com/login',
-      details,
-      {
-        headers: {  'Content-Type': 'application/json', mode:'cors'},
+  'posts/login',async (obj,thunkAPI) => {
+    try{
+      let response= await fetch(`${environment.baseURL}/admin/login`, {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body:JSON.stringify(obj)
+      })
+      const data = await response.json()
+      
+      if(response.status===200 && data.IsSuccess){
+        return data.Message
       }
-    )
-    if(res){
-      console.log(res)
-      return res
-  }
+      else {
+        return thunkAPI.rejectWithValue(data);
+      }
+    }
+    catch(error){
+       return thunkAPI.rejectWithValue({error:error.message})
+    }
   })
 
   export const signup = createAsyncThunk('posts/sign',async (obj,thunkAPI) => {
@@ -31,9 +40,12 @@ export const login= createAsyncThunk(
         body:JSON.stringify(obj)
       })
       const data = await response.json()
-    console.log(data)
-      if(data){
-        return data.Data
+      console.log(response)
+      if(response.status===200 && data.IsSuccess){
+        return data.Message
+      }
+      else {
+        return thunkAPI.rejectWithValue(data);
       }
     }
     catch(error){
@@ -44,16 +56,35 @@ export const login= createAsyncThunk(
 const userSlice = createSlice({
   name: 'posts',
   initialState: {
-    list: [],
-    status: null,
+    signupStatus:null,
+    loginStatus:null
   },
   extraReducers: {
-   
+    [signup.pending]: (state,  {payload} ) => {
+      state.signupStatus=false
+    },
+    [signup.fulfilled]: (state,  {payload} ) => {
+      console.log(payload)
+      state.signupStatus=true
+    },
+    [signup.rejected]: (state,  {payload} ) => {
+      console.error(payload)
+      alert(payload.Message)
+      state.signupStatus=false
+    },
+    [login.pending]: (state,  {payload} ) => {
+      state.loginStatus=false
+    },
     [login.fulfilled]: (state,  {payload} ) => {
-      state.list = payload
-      state.status = 'success'
+      console.log(payload)
+      state.loginStatus=true
+    },
+    [login.rejected]: (state,  {payload} ) => {
+      console.error(payload)
+      alert(payload.Message)
+      state.loginStatus=false
     }
   },
 })
-
+export const userSelector = (state) => state.user;
 export default userSlice.reducer

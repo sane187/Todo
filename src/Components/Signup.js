@@ -1,27 +1,46 @@
-import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { FiLock } from 'react-icons/fi';
 import { HiOutlineMail } from 'react-icons/hi';
 import { Button } from 'react-bootstrap';
 import { Navigate, useNavigate } from 'react-router-dom';
-import { login,signup } from '../store/features/user/userSlice';
+import { login,signup,userSelector } from '../store/features/user/userSlice';
 
 
-const Login = () => {
+const Signup = () => {
   const [details,setDetails] = useState({
     "email":"",
     "password":""
   })
+  const [signupPage,setSignupPage] = useState(false)
   const dispatch = useDispatch();
   const navigate= useNavigate()
+  const {signupStatus,loginStatus} = useSelector(userSelector)
 
     const handleSubmit=(e)=>{
         e.preventDefault(); 
-        
-         dispatch(signup(details))
-      
+        if(signupPage){
+         dispatch(signup(details))}
+         else{
+          dispatch(login(details))
+         }
       //  setTimeout(navigate("/home"),4000);
     }
+
+useEffect(()=>{
+if(signupStatus){
+  setSignupPage(false)
+}
+},[signupStatus])
+
+useEffect(()=>{
+  if(loginStatus){                          
+    setSignupPage(false)
+ setTimeout(navigate("/home"),2000);
+  }
+  },[loginStatus])
+
+
     const handleClick =(feildname,e)=>{
        let same={...details}
        same[feildname]=e.target.value;
@@ -38,9 +57,9 @@ const Login = () => {
         <div className="card text-black" style={{borderRadius: "#25px"}}>
           <div className="card-body p-md-5">
             <div className="row justify-content-center">
-              <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+              <div className="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">-
 
-                <p className="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">Login To Continue</p>
+                <p className="h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">{signupPage?"Signup":"Login"}</p>
 
                 <form className="mx-1 mx-md-4" onSubmit={handleSubmit}>
 
@@ -61,9 +80,9 @@ const Login = () => {
                   </div>
 
                   <div className="mb-3 mb-lg-4">
-                    <Button variant="dark" type='submit'>Log In</Button>
+                    <Button variant="dark" type='submit'>{signupPage?"Sign up":"Login"}</Button>
                   </div>
-
+                     {signupPage? <a style={{color:"blue",cursor:"pointer"}} onClick={()=>setSignupPage(false)}>Back to Login</a>: <div>Not a user? <a style={{color:"blue",cursor:"pointer"}} onClick={()=>setSignupPage(true)}>Try Signing up</a></div>}
                 </form>
 
               </div>
@@ -83,4 +102,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default Signup
