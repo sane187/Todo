@@ -58,8 +58,13 @@ const date = new Date()
       >
         <Form.Control type="email" placeholder="name@example.com" style={{height:"15vh"}} onChange={(e=>setFormData({...formData,"task":e.target.value}))}/>
       </FloatingLabel>
+         <div className='d-flex align-items-center'>
 
-      <div className='d-flex align-items-center imp-cont' onClick={handleImp}><h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>
+      <div className='d-flex align-items-center imp-cont' onClick={handleImp}> 
+      <h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>    <div className='px-5' style={{borderRight:"2px solid black",height:"30px"}}></div>
+        Select date <input type="date" className="ms-3 p-1" onChange={(e=>setFormData({...formData,"title":e.target.value}))} style={{borderRadius:"4px"}}/>
+       
+      </div>
       </Form>
 
       </Modal.Body>
@@ -112,7 +117,7 @@ function EditModal(props) {
         <Form.Control type="text" placeholder="name@example.com" value={formData?formData.task:2} style={{height:"15vh"}} onChange={(e=>setFormData({...formData,"task":e.target.value}))}/>
       </FloatingLabel>
 
-      <div className='d-flex align-items-center imp-cont' onClick={(e=>setFormData({...formData,"fav":imp}))}><h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>
+      <div className='d-flex align-items-center imp-cont' onClick={(e=>{setImp(!imp);setFormData({...formData,"fav":!imp})})}><h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>
       </Form>
 
       </Modal.Body>

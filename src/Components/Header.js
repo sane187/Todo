@@ -4,12 +4,22 @@ import { BiTask,BiSearch } from 'react-icons/bi';
 import { FaBars,FaRegUser } from 'react-icons/fa';
 import { useSelector,useDispatch } from 'react-redux';
 import {Stack} from 'react-bootstrap'
+import { useNavigate } from 'react-router-dom';
 
 
 const Header = () => {
-  const {name,link}=useSelector(state=>state.profile)
- 
+  const navigate =useNavigate()
+  const {name,link}=useSelector(state=>state.profile);
+  
+
   const [auth,setAuth]=useState(false)
+  
+
+   const handleLogout = ()=>{
+          navigate('/',{replace:true});
+          localStorage.clear();
+  }
+
   return (
    <React.Fragment>
     <nav className="navbar navbar-expand-lg" style={{
@@ -41,7 +51,7 @@ background:"linear-gradient( 40deg, #bf68e6 20%, #9e48cd 51%, #bf68e6 90% )"
   <ul className="dropdown-menu nav-dwn-menu py-1" aria-labelledby="dropdownMenuButtonProfile">
     <li><a className="dropdown-item" href="#">Edit Profile</a></li>
     <li><a className="dropdown-item" href="#">Another action</a></li>
-    <li><a className="dropdown-item" href="#">Log Out</a></li>
+    <li><a className="dropdown-item" href="#" onClick={handleLogout}>Log Out</a></li>
   </ul>
 </div>
         </Stack>

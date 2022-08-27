@@ -33,8 +33,12 @@
     font-size: 2rem;
     color: #B05ADB;
 margin-left: 8px;
-
+transition:all 1s ;
 }
+.handshake-icon:hover{
+transform: rotate(360deg) scale(1.9);
+}
+
 
 .task-outer-cont div {
     font-size: 1.3rem !important;
@@ -52,7 +56,7 @@ color: #fff;
 border-radius: 25px;
 border: none;
 padding: 8px 18px;
-}
+} 
 .mfooter-btn-cont button:nth-child(2){
 background-color: rgba(128, 128, 128, 0.543);
 color: #000;
@@ -66,8 +70,10 @@ padding: 8px 18px;
 color: #000 !important;
 font-weight: 600 !important;
 border: 1px solid #e4e4e4 !important;
-box-shadow: none !important;
+box-shadow: 3.0px 6.0px 6.0px hsl(0deg 0% 0% / 0.38) !important;
+/* box-shadow: #e8e8e8 0px 5px 15px; */
 } 
+
 .imp-cont{
     font-size: 1.2rem;
     color: #000;
