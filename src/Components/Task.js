@@ -62,7 +62,7 @@ const date = new Date()
 
       <div className='d-flex align-items-center imp-cont' onClick={handleImp}> 
       <h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>    <div className='px-5' style={{borderRight:"2px solid black",height:"30px"}}></div>
-        Select date <input type="date" className="ms-3 p-1" onChange={(e=>setFormData({...formData,"title":e.target.value}))} style={{borderRadius:"4px"}}/>
+        Select dates <input type="date" className="ms-3 p-1" onChange={(e=>setFormData({...formData,"title":e.target.value}))} style={{borderRadius:"4px"}}/>
        
       </div>
       </Form>
