@@ -29,7 +29,7 @@ export const getNotesData = createAsyncThunk("task/getNotesData",async(_,thunkAP
 export const createNotesData = createAsyncThunk("task/createNotesData",async(obj,thunkAPI)=>{
   
   try{
-   console.log(obj);
+
     let response= await fetch(`${environment.baseURL}/create`, {
       method: "POST",
       headers: {
@@ -98,7 +98,8 @@ export const updateNotesData = createAsyncThunk("task/updateNotesData",async({id
 const initialState = {
     data:[],
     isSuccess:false,
-    isLoading:false
+    isError:false,
+    loading:false
 }
 
 const taskSlice=createSlice({
@@ -106,10 +107,15 @@ const taskSlice=createSlice({
     initialState,
     reducers:{
       
-          updateTask:(state,action)=>{
+          // updateTask:(state,action)=>{
             
-            let aj=state.data.findIndex(item=>item.id===action.payload.id)
-                     state.data[aj]=action.payload
+          //   let aj=state.data.findIndex(item=>item.id===action.payload.id)
+          //            state.data[aj]=action.payload
+          // }
+          clearState:(state)=>{
+            state.isSuccess=false;
+            state.isError=false;
+            state.loading=false
           }
     },
     extraReducers: {
@@ -128,24 +134,29 @@ const taskSlice=createSlice({
       },
       [createNotesData.fulfilled]: (state, { payload }) => {
         console.log(payload)
+        state.loading = false
+        state.isSuccess= true
       },
       [createNotesData.rejected]: (state) => {
         state.loading = false
+        state.isError =true
       },
       [deleteNotesData.pending]: (state) => {
         state.loading = true
       },
       [deleteNotesData.fulfilled]: (state, { payload }) => {
-        console.log(payload)
+        state.loading = false;
+        state.isSuccess =true
       },
       [deleteNotesData.rejected]: (state) => {
-        state.loading = false
+        state.loading = false;
       },
       [updateNotesData.pending]: (state) => {
         state.loading = true
       },
       [updateNotesData.fulfilled]: (state, { payload }) => {
-        console.log(payload)
+        state.loading= false;
+        state.isSuccess =true
       },
       [updateNotesData.rejected]: (state) => {
         state.loading = false
@@ -156,4 +167,4 @@ const taskSlice=createSlice({
 
 export default taskSlice.reducer
 
-export const {addTask,deleteTask,updateTask} = taskSlice.actions
+export const {clearState} = taskSlice.actions

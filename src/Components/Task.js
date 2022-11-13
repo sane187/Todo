@@ -9,7 +9,9 @@ import {MdDelete } from 'react-icons/md';
 import { FaRegHandSpock,FaRegStar } from 'react-icons/fa';
 import todo from '../Assets/todo.jpg';
 import { nanoid } from '@reduxjs/toolkit';
-import { getNotesData,createNotesData,deleteNotesData,updateNotesData } from '../store/features/task/taskSlice';
+import { getNotesData,createNotesData,deleteNotesData,updateNotesData,clearState } from '../store/features/task/taskSlice';
+import moment from 'moment/moment';
+import PageLoader from './PageLoader/PageLoader';
 
 
 function MyVerticallyCenteredModal(props) {
@@ -17,21 +19,30 @@ function MyVerticallyCenteredModal(props) {
 const date = new Date()
 
 
-  const [imp,setImp]=useState(+false);
-  const [formData,setFormData] = useState({title:"",task:"","fav":+false,date:date})
+  // const [imp,setImp]=useState(+false);
+  const [formData,setFormData] = useState({title:"",task:"",fav:+false,date:date})
   const dispatch=useDispatch();
+  const {isSuccess} = useSelector(state=>state.task)
+
+  useEffect(()=>{
+  if(isSuccess){
+    props.onHide(); 
+    dispatch(clearState())
+  }
+  },[isSuccess])
 
   const handleSave =(props)=>{
-    props.onHide(); 
+   
     dispatch(createNotesData({...formData,id:nanoid()}));
-    setImp(+false)
-    setFormData({title:"",task:""})
+    
+    setFormData({title:"",task:"",fav:+false,date:date})
   }
   const handleImp =(e)=>{
-    
-    setImp(+!imp);
-  setFormData({...formData,"fav":+!formData.imp})
+  setFormData((formData)=>({...formData,fav:+!formData.fav}))
 }
+
+
+console.log("aj",formData);
   return (
     <Modal
       {...props}
@@ -58,11 +69,12 @@ const date = new Date()
       >
         <Form.Control type="email" placeholder="name@example.com" style={{height:"15vh"}} onChange={(e=>setFormData({...formData,"task":e.target.value}))}/>
       </FloatingLabel>
-         <div className='d-flex align-items-center'>
+         <div className='d-flex align-items-center justify-content-center mt-2'>
 
       <div className='d-flex align-items-center imp-cont' onClick={handleImp}> 
-      <h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>    <div className='px-5' style={{borderRight:"2px solid black",height:"30px"}}></div>
-        Select dates <input type="date" className="ms-3 p-1" onChange={(e=>setFormData({...formData,"title":e.target.value}))} style={{borderRadius:"4px"}}/>
+      <h6 className='mb-0 me-2'>Click to mark as important</h6> {formData.fav===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>  
+        <div className='mx-5' style={{borderRight:"2px solid black",height:"30px"}}></div>
+        Select date <input type="date" className="ms-3 p-1" onChange={(e=>setFormData({...formData,"date":e.target.value}))} style={{borderRadius:"4px"}}/>
        
       </div>
       </Form>
@@ -77,17 +89,26 @@ const date = new Date()
   );
 }
 function EditModal(props) {
-  const [imp,setImp]=useState(+false);
-  const [formData,setFormData] = useState(props.data)
-  const dispatch=useDispatch();
-  console.log(formData)
 
-  const handleSave =(props,id)=>{
-    props.onHide(); 
+
+  const [formData,setFormData] = useState(props.data)
+
+
+  // useEffect(()=>{
+  //   if(isSuccess){
+  //     props.onHide(); 
+  //     dispatch(clearState())
+  //   }
+  //   },[isSuccess])
+  
+  
+  
+  const handleImp =(e)=>{
+    
    
-    dispatch(updateNotesData({id:formData._id,Data:formData}));
-     setTimeout(window.location.reload(),2000)
-  }
+  setFormData((formData)=>({...formData,fav:+!formData.fav}))
+}
+
  return (
    
     <Modal
@@ -106,7 +127,7 @@ function EditModal(props) {
             <Form>
       <Form.Group className="mb-3" controlId="formBasicEmail">
         <Form.Label>Title</Form.Label>
-        <Form.Control type="text" placeholder="This is a title..." value={formData?formData.title:2} onChange={(e=>setFormData({...formData,"title":e.target.value}))}/>
+        <Form.Control type="text" placeholder="This is a title..." value={formData?formData.title:""} onChange={(e=>setFormData({...formData,"title":e.target.value}))}/>
       </Form.Group>
       
       <FloatingLabel
@@ -114,15 +135,23 @@ function EditModal(props) {
         label="Describe your task..."
         className="mb-3" 
       >
-        <Form.Control type="text" placeholder="name@example.com" value={formData?formData.task:2} style={{height:"15vh"}} onChange={(e=>setFormData({...formData,"task":e.target.value}))}/>
+        <Form.Control type="text" placeholder="name@example.com" value={formData?formData.task:""} style={{height:"15vh"}} onChange={(e=>setFormData({...formData,"task":e.target.value}))}/>
       </FloatingLabel>
 
-      <div className='d-flex align-items-center imp-cont' onClick={(e=>{setImp(!imp);setFormData({...formData,"fav":!imp})})}><h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>
+      {/* <div className='d-flex align-items-center imp-cont' onClick={(e=>{setImp(!imp);setFormData({...formData,"fav":!imp})})}><h6 className='mb-0 me-2'>Click to mark as important</h6> {imp===true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div> */}
+      <div className='d-flex align-items-center'>
+
+<div className='d-flex align-items-center imp-cont' onClick={handleImp}> 
+<h6 className='mb-0 me-2'>Click to mark as important</h6> {formData.fav===+true?<BsFillExclamationCircleFill style={{color:"red"}}/>:<BsFillExclamationCircleFill style={{color:"black"}}/>}</div>  
+  <div className='mx-5' style={{borderRight:"2px solid black",height:"30px"}}></div>
+  Select date <input type="date" className="ms-3 p-1" value={moment(formData?.date).format("YYYY-MM-DD")} onChange={(e=>setFormData({...formData,"date":e.target.value}))} style={{borderRadius:"4px"}}/>
+
+</div>
       </Form>
 
       </Modal.Body>
       <Modal.Footer className='justify-content-center pt-4 border-none'>
-        <div className='mfooter-btn-cont'><Button className="me-2" onClick={props.onHide}>Cancel</Button><Button onClick={()=>handleSave(props,formData.id)}>Save</Button></div>
+        <div className='mfooter-btn-cont'><Button className="me-2" onClick={props.onHide}>Cancel</Button><Button onClick={()=>props.handleSave(formData,formData.id)}>Save</Button></div>
       </Modal.Footer>
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#BF68E6" fillOpacity="1" d="M0,160L80,181.3C160,203,320,245,480,218.7C640,192,800,96,960,85.3C1120,75,1280,149,1360,186.7L1440,224L1440,320L1360,320C1280,320,1120,320,960,320C800,320,640,320,480,320C320,320,160,320,80,320L0,320Z"></path></svg>
 
@@ -136,6 +165,7 @@ const Task = () => {
   function populateStorage(data) {
     localStorage.setItem('user', JSON.stringify(data));
   }
+  
   // const name= useSelector(store=>store.user)
 
 
@@ -145,34 +175,46 @@ const Task = () => {
 
 const dispatch=useDispatch()
 const [selected,setSelected]=useState({})
-  const {data}=useSelector(state=>state.task);
+  const {data,loading,isSuccess}=useSelector(state=>state.task);
   const [modalShow, setModalShow] = React.useState(+false);
   const [show, setShow] = React.useState(+false);
+  
 
   const handleDelete=(id)=>{
     dispatch(deleteNotesData(id));
-    setTimeout(function(){
-      window.location.reload();
-   }, 3000);
+    // dispatch(clearState())
   }
   const handleEdit =(item)=>{
     setSelected(item)
    setShow(+true)
   }
+
+  const handleSave =(formData)=>{
+    dispatch(updateNotesData({id:formData._id,Data:formData}));
+  }
+  
+
  useEffect(
   ()=>{
     dispatch(getNotesData())
   },[]
  )
- 
+ useEffect(()=>{
+  if(isSuccess){
+    setShow(+false)
+    dispatch(getNotesData())
+    dispatch(clearState())
+  }
+ },[isSuccess])
   return (
     <React.Fragment>
+      {loading && <PageLoader />}
         <Container fluid style={{marginTop:"2.5rem"}}>
             <MyVerticallyCenteredModal
         show={modalShow}
         onHide={() => setModalShow(+false)}
       />
-      {show?<EditModal show={show} onHide={()=>setShow(+false)} data={selected}/>:""}
+      {show?<EditModal show={show} onHide={()=>setShow(+false)} data={selected} handleSave={handleSave}/>:""}
 <Row >
     <Col lg={4} xl={4}  style={{backgroundImage: `url(${todo})`,backgroundSize:"cover",backgroundRepeat:'no-repeat',backgroundPosition:"center center"}}>
         <div className='p-4'>
